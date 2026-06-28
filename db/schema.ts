@@ -1,21 +1,16 @@
 import {
   pgTable,
-  uuid,
+  serial,
   varchar,
-  text,
   timestamp,
 } from "drizzle-orm/pg-core";
 
 export const admins = pgTable("admins", {
-  id: uuid("id").defaultRandom().primaryKey(),
+  id: serial("id").primaryKey(),
 
-  email: varchar("email", { length: 255 })
-    .notNull()
-    .unique(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
 
-  password: text("password").notNull(),
+  password: varchar("password", { length: 255 }).notNull(),
 
-  createdAt: timestamp("created_at")
-    .defaultNow()
-    .notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
 });

@@ -3,11 +3,14 @@
 import Image from "next/image";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {toast} from "sonner";
 
 export default function AdminLoginForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
 const [password, setPassword] = useState("");
+const router = useRouter();
 
 const handleLogin = async (
   e: React.FormEvent<HTMLFormElement>
@@ -27,7 +30,13 @@ const handleLogin = async (
 
   const data = await response.json();
 
-  console.log(data);
+  if (response.ok) {
+  toast.success("Login successful!");
+  router.push("/admin/dashboard");
+} else {
+  toast.error(data.message);
+}
+  
 };
   return (
     <div className="w-full max-w-md rounded-3xl bg-white p-10 shadow-2xl border border-pink-100">
