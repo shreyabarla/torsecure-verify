@@ -4,6 +4,7 @@ import {
   serial,
   varchar,
   timestamp,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const internshipStatus = pgEnum("internship_status", [
@@ -52,4 +53,25 @@ export const interns = pgTable("interns", {
   createdAt: timestamp("created_at").defaultNow(),
 
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const certificates = pgTable("certificates", {
+  id: serial("id").primaryKey(),
+
+  certificateId: varchar("certificate_id", {
+    length: 50,
+  })
+    .notNull()
+    .unique(),
+
+  internId: integer("intern_id")
+    .notNull()
+    .references(() => interns.id),
+
+  issueDate: timestamp("issue_date")
+    .defaultNow()
+    .notNull(),
+
+  createdAt: timestamp("created_at")
+    .defaultNow(),
 });

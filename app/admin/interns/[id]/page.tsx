@@ -3,7 +3,8 @@ import { db } from "@/db";
 import { interns } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
-
+import MarkCompletedButton from "@/components/MarkCompletedButton";
+import GenerateCertificateButton from "@/components/GenerateCertificateButton";
 export default async function ViewInternPage({
   params,
 }: {
@@ -33,12 +34,22 @@ export default async function ViewInternPage({
           </p>
         </div>
 
+        <div className="flex gap-3">
         <Link
           href={`/admin/interns/${intern.id}/edit`}
-          className="bg-green-600 text-white px-5 py-3 rounded-lg hover:bg-green-700"
+          className="bg-blue-600 text-white px-5 py-3 rounded-lg hover:bg-blue-700"
         >
           Edit
         </Link>
+
+        {intern.status === "Active" && (
+          <MarkCompletedButton internId={intern.id} />
+        )}
+
+        {intern.status === "Completed" && (
+          <GenerateCertificateButton internId={intern.id} />
+        )}
+      </div>
       </div>
 
       {/* Details Card */}
